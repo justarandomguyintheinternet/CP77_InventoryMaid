@@ -209,6 +209,63 @@ function removeJunk.sellJunkType(tpe, percent)
     end
 end
 
+function removeJunk.previewType(tpe, percent)
+    info = {count = 0, money = 0, afterCount = 0}
+    local ts = Game.GetTransactionSystem()
+    local itemCnt = 0
+    local beforeItem = 0
+    for _, v in ipairs(removeJunk.items[tpe]) do
+        local itemTDBID = TweakDBID.new(v)
+        local itemID = ItemID.new(itemTDBID)
+        beforeItem = beforeItem + ts:GetItemQuantity(Game.GetPlayer(), itemID)
+        local currentItemCount = math.floor(ts:GetItemQuantity(Game.GetPlayer(), itemID) * (percent / 100))
+        itemCnt = itemCnt + currentItemCount
+    end
+
+    local moneyGained = 0
+    if itemCnt > 0 then
+        moneyGained = (removeJunk.price[tpe]) * itemCnt
+    end
+    info.count = beforeItem
+    info.money = moneyGained
+    info.afterCount = beforeItem - itemCnt
+    return info
+end
+
+function removeJunk.preview(InventoryMaid)
+    info = {count = 0, money = 0, afterCount = 0}
+    j1 = {count = 0, money = 0, afterCount = 0}
+    j2 = {count = 0, money = 0, afterCount = 0}
+    j3 = {count = 0, money = 0, afterCount = 0}
+    if InventoryMaid.settings.junkSettings[1].sellType then
+        j1 = removeJunk.previewType("junk", InventoryMaid.settings.junkSettings[1].percent)
+    else
+        x = removeJunk.previewType("junk", InventoryMaid.settings.junkSettings[1].percent)
+        j1.count = x.count
+        j1.afterCount = x.count
+    end
+
+    if InventoryMaid.settings.junkSettings[2].sellType then
+        j2 = removeJunk.previewType("alcohol", InventoryMaid.settings.junkSettings[2].percent)
+    else
+        x = removeJunk.previewType("alcohol", InventoryMaid.settings.junkSettings[1].percent)
+        j2.count = x.count
+        j2.afterCount = x.count
+    end
+
+    if InventoryMaid.settings.junkSettings[3].sellType then
+        j3 = removeJunk.previewType("jewellery", InventoryMaid.settings.junkSettings[3].percent)
+    else
+        x = removeJunk.previewType("jewellery", InventoryMaid.settings.junkSettings[1].percent)
+        j3.count = x.count
+        j3.afterCount = x.count
+    end
+    info.count = j1.count + j2.count + j3.count
+    info.money = j1.money + j2.money + j3.money
+    info.afterCount = j1.afterCount + j2.afterCount + j3.afterCount
+    return info
+end
+
 function removeJunk.sellJunk(InventoryMaid)
     if InventoryMaid.settings.junkSettings[1].sellType then
         removeJunk.sellJunkType("junk", InventoryMaid.settings.junkSettings[1].percent)

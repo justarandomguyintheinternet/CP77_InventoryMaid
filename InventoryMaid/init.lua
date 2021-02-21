@@ -2,53 +2,40 @@ InventoryMaid = {}
 
 function InventoryMaid:new()
 registerForEvent("onInit", function()
+    
     function InventoryMaid.fileExists(filename)
         local f=io.open(filename,"r")
         if (f~=nil) then io.close(f) return true else return false end
-    end
-
-    function getCWD(mod_name) -- Made by Ming
-        if InventoryMaid.fileExists("bin/x64/plugins/cyber_engine_tweaks/mods/"..mod_name.."/init.lua") then
-            InventoryMaid.rootPathIO = "./bin/x64/plugins/cyber_engine_tweaks/mods/InventoryMaid/"
-            return "bin/x64/plugins/cyber_engine_tweaks/mods/"..mod_name.."/"
-        elseif InventoryMaid.fileExists("x64/plugins/cyber_engine_tweaks/mods/"..mod_name.."/init.lua") then
-            return "x64/plugins/cyber_engine_tweaks/mods/"..mod_name.."/"
-        elseif InventoryMaid.fileExists("plugins/cyber_engine_tweaks/mods/"..mod_name.."/init.lua") then
-            InventoryMaid.rootPathIO = "./plugins/cyber_engine_tweaks/mods/InventoryMaid/"
-            return "plugins/cyber_engine_tweaks/mods/"..mod_name.."/"
-        elseif InventoryMaid.fileExists("cyber_engine_tweaks/mods/"..mod_name.."/init.lua") then
-            return "cyber_engine_tweaks/mods/"..mod_name.."/"
-        elseif InventoryMaid.fileExists("mods/"..mod_name.."/init.lua") then
-            return "mods/"..mod_name.."/"
-        elseif  InventoryMaid.fileExists(mod_name.."/init.lua") then
-            InventoryMaid.rootPathIO = "./InventoryMaid/"
-            return mod_name.."/"
-        elseif  InventoryMaid.fileExists("init.lua") then
-            return ""
-        end
     end
 
     function InventoryMaid.resetSettings()
         InventoryMaid.settings = tableFunctions.deepcopy(InventoryMaid.originalSettings)
     end
 
-    InventoryMaid.rootPath = getCWD("InventoryMaid")
-
-    for k, _ in pairs(package.loaded) do
-        if string.match(k, InventoryMaid.rootPath .. ".*") then
-            package.loaded[k] = nil
+    function InventoryMaid.loadStandardFile()
+        
+        local file = io.open("saves/startup.json", "r")
+        local slot = json.decode(file:read("*a"))   
+        file:close()   
+        InventoryMaid.standardSlot = slot
+        
+        if slot ~= 0 then
+            local file = io.open("saves/slot"..slot..".json", "r")
+            local config = json.decode(file:read("*a"))
+            file:close()
+            InventoryMaid.settings = config
         end
     end
 
- 	InventoryMaid.CPS = require (InventoryMaid.rootPath.."CPStyling")
+ 	InventoryMaid.CPS = require ("CPStyling.lua")
  	InventoryMaid.theme = InventoryMaid.CPS
     InventoryMaid.color = InventoryMaid.CPS
 
-    InventoryMaid.baseUI = require (InventoryMaid.rootPath..".ui.baseUI")
-    tableFunctions = require (InventoryMaid.rootPath.. ".utility.tableFunctions")
+    InventoryMaid.baseUI = require ("ui/baseUI.lua")
+    tableFunctions = require ("utility/tableFunctions.lua")
     
     drawWindow = false
-
+    InventoryMaid.standardSlot = 0
     InventoryMaid.originalSettings = {globalSettings = {sellFilter = 0, filterValueTopX = 3, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false, legendary = false, iconic = false}},
                                       weaponSettings = {sellWeapons = true, sellPerType = false, sellFilter = 0, filterValueTopX = 3, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false, legendary = false, iconic = false}, forceSubOptionsUpdate = false,
                                                         typeOptions = {[1] = {displayName = "Assault rifle", typeName = "Wea_Rifle", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
@@ -76,18 +63,16 @@ registerForEvent("onInit", function()
                                       fileSettings = {currentName = "Default", tableNames = {[1] = "Default", [2] = "Default", [3] = "Default", [4] = "Default", [5] = "Default"}},
                                       junkSettings = {[1] = {typeName = "Junk", percent = 100, sellType = true}, [2] = {typeName = "Alcohol", percent = 100, sellType = true}, [3] = {typeName = "Jewellery", percent = 100, sellType = true}}}
 
+    
     InventoryMaid.resetSettings()
-
+    InventoryMaid.loadStandardFile()
+    
 end)
 
 registerForEvent("onDraw", function()
     if drawWindow then
         baseUI.Draw(InventoryMaid)
     end 
-end)
-
-registerHotkey("InventoryMaidWindowToggle", "Toggle Window", function()
-    drawWindow = not drawWindow
 end)
 
 registerForEvent("onOverlayOpen", function()

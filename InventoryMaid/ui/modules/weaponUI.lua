@@ -49,7 +49,7 @@ end
 
 function weaponUI.draw(InventoryMaid)
 
-    tooltips = require (InventoryMaid.rootPath.. ".utility.tooltips")
+    tooltips = require ("utility/tooltips.lua")
 
     if InventoryMaid.settings.weaponSettings.forceSubOptionsUpdate then
         InventoryMaid.settings.weaponSettings.forceSubOptionsUpdate = false
@@ -81,7 +81,7 @@ function weaponUI.draw(InventoryMaid)
 -- End Sell filter value selection
 
 -- Sell qualitys selection
-    if ImGui.ListBoxHeader("Sell qualitys", 6) then
+    if ImGui.BeginListBox("Sell qualities", 292, 105) then
 		ImGui.SetWindowFontScale(1.0)
         InventoryMaid.settings.weaponSettings.sellQualitys.common = ImGui.Selectable("Sell common", InventoryMaid.settings.weaponSettings.sellQualitys.common)
 		InventoryMaid.settings.weaponSettings.sellQualitys.uncommon = ImGui.Selectable("Sell uncommon", InventoryMaid.settings.weaponSettings.sellQualitys.uncommon)
@@ -89,7 +89,7 @@ function weaponUI.draw(InventoryMaid)
 		InventoryMaid.settings.weaponSettings.sellQualitys.epic = ImGui.Selectable("Sell epic", InventoryMaid.settings.weaponSettings.sellQualitys.epic)
         InventoryMaid.settings.weaponSettings.sellQualitys.legendary = ImGui.Selectable("Sell legendary", InventoryMaid.settings.weaponSettings.sellQualitys.legendary)
         InventoryMaid.settings.weaponSettings.sellQualitys.iconic = ImGui.Selectable("Sell iconic", InventoryMaid.settings.weaponSettings.sellQualitys.iconic)
-		ImGui.ListBoxFooter()
+		ImGui.EndListBox()
     end
 -- End Sell qualitys selection
 

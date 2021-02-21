@@ -382,7 +382,7 @@ end
 
 function baseSort.generateSellList(InventoryMaid)
 	baseSort.resetLists()
-	tableFunctions = require (InventoryMaid.rootPath.. ".utility.tableFunctions")
+	tableFunctions = require ("utility/tableFunctions.lua")
 
 	baseSort.getItemLists(InventoryMaid)
 

@@ -42,9 +42,9 @@ end
 
 function generalUI.draw(InventoryMaid)
 
-        tooltips = require (InventoryMaid.rootPath.. ".utility.tooltips")
-        tableFunctions = require (InventoryMaid.rootPath.. ".utility.tableFunctions")
-        sell = require (InventoryMaid.rootPath.. ".sort.sell")
+        tooltips = require ("utility/tooltips.lua")
+        tableFunctions = require ("utility/tableFunctions.lua")
+        generalUI.sell = require ("sort/sell.lua")
         
     -- Sell filter selection 
         InventoryMaid.settings.globalSettings.sellFilter, changed = ImGui.Combo("Sell filter", InventoryMaid.settings.globalSettings.sellFilter, { "Sell to have only top x left", "Sell worst x %", "Sell x % worse than avg equipped"}, 3, 3)
@@ -64,7 +64,7 @@ function generalUI.draw(InventoryMaid)
     -- End Sell value filter selection 
 
     -- Sell qualitys selection
-        if ImGui.ListBoxHeader("Sell qualitys", 6) then
+        if ImGui.BeginListBox("Sell qualities", 292, 105) then
             ImGui.SetWindowFontScale(1.0)
             backup = tableFunctions.deepcopy(InventoryMaid.settings.globalSettings.sellQualitys)
             InventoryMaid.settings.globalSettings.sellQualitys.common = ImGui.Selectable("Sell common", InventoryMaid.settings.globalSettings.sellQualitys.common)
@@ -85,7 +85,7 @@ function generalUI.draw(InventoryMaid)
             generalUI.updateSubOptions(InventoryMaid, changed_epic, "quality_epic")
             generalUI.updateSubOptions(InventoryMaid, changed_legendary, "quality_legendary")
             generalUI.updateSubOptions(InventoryMaid, changed_iconic, "quality_iconic")
-            ImGui.ListBoxFooter()
+            ImGui.EndListBox()
         end  
     -- End Sell qualitys selection
 
@@ -93,7 +93,7 @@ function generalUI.draw(InventoryMaid)
         ImGui.Separator()
         preview = InventoryMaid.CPS.CPButton("Preview selected", 125, 30)
         if preview then       
-             generalUI.previewText = sell.preview(InventoryMaid)
+             generalUI.previewText = generalUI.sell.preview(InventoryMaid)
         end
         ImGui.SameLine()
         ImGui.Text(generalUI.previewText)
@@ -101,13 +101,13 @@ function generalUI.draw(InventoryMaid)
         sellPressed = InventoryMaid.CPS.CPButton("Sell selected", 125, 30)
         if sellPressed then 
             generalUI.previewText = "Sold!"
-            sell.sell(InventoryMaid)
+            generalUI.sell.sell(InventoryMaid)
         end
         ImGui.SameLine()
         disassemble = InventoryMaid.CPS.CPButton("Disassemble selected", 150, 30)
         if disassemble then
             generalUI.previewText = "Disassembled!"
-            sell.disassemble(InventoryMaid)
+            generalUI.sell.disassemble(InventoryMaid)
         end
         ImGui.SameLine()
         if (InventoryMaid.CPS.CPButton("Reset", 75, 30)) then

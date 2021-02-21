@@ -2,7 +2,7 @@ sell = {}
 
 function sell.sell(InventoryMaid)
     local ts = Game.GetTransactionSystem()
-    baseSort = require (InventoryMaid.rootPath.. ".sort.baseSort")
+    baseSort = require ("sort/baseSort.lua")
     baseSort.generateSellList(InventoryMaid)
 
     Game.AddToInventory("Items.money", sell.calculateMoney())
@@ -10,12 +10,12 @@ function sell.sell(InventoryMaid)
         ts:RemoveItem(Game.GetPlayer(), v:GetID(), 1)
     end  
 
-    removeJunk = require (InventoryMaid.rootPath.. ".sort.removeJunk")
+    removeJunk = require ("sort/removeJunk.lua")
     removeJunk.sellJunk(InventoryMaid)  
 end 
 
 function sell.disassemble(InventoryMaid)
-    baseSort = require (InventoryMaid.rootPath.. ".sort.baseSort")
+    baseSort = require ("sort/baseSort.lua")
     baseSort.generateSellList(InventoryMaid)
 
     for _, v in ipairs(baseSort.finalSellList) do
@@ -23,7 +23,7 @@ function sell.disassemble(InventoryMaid)
         craftingSystem:DisassembleItem(Game.GetPlayer(), v:GetID(), 1)
     end  
 
-    removeJunk = require (InventoryMaid.rootPath.. ".sort.removeJunk")
+    removeJunk = require ("sort/removeJunk.lua")
     removeJunk.sellJunk(InventoryMaid) 
 end
 
@@ -39,12 +39,17 @@ function sell.calculateMoney()
 end
 
 function sell.preview(InventoryMaid)
-    baseSort = require (InventoryMaid.rootPath.. ".sort.baseSort")
-    tableFunctions = require (InventoryMaid.rootPath.. ".utility.tableFunctions")
+    removeJunk = require ("sort/removeJunk.lua")
+    baseSort = require ("sort/baseSort.lua")
+    tableFunctions = require ("utility/tableFunctions.lua")
     baseSort.generateSellList(InventoryMaid)
     nItems = baseSort.nItems
     nItemsAfter = nItems - tableFunctions.getLength(baseSort.finalSellList)
     money = sell.calculateMoney()
+    junkInfo = removeJunk.preview(InventoryMaid)
+    money = money + junkInfo.money
+    nItems = nItems + junkInfo.count
+    nItemsAfter = nItemsAfter + junkInfo.afterCount
     return string.format("Items currently: %d, After: %d, \nMoney gained: %d",nItems, nItemsAfter, money)
 end
 

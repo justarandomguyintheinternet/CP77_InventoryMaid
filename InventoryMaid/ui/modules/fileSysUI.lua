@@ -8,61 +8,54 @@ function fileSysUI.saveFilter(InventoryMaid, slot, name)
 		name = InventoryMaid.settings.fileSettings.tableNames[slot]
 	end
 	InventoryMaid.settings.fileSettings.currentName = name
-	local file = io.open(InventoryMaid.rootPathIO.."saves/slot"..slot..".json", "w")
-	io.output(file)
+	local file = io.open("saves/slot"..slot..".json", "w")
 	local jconfig = json.encode(InventoryMaid.settings)
-	io.write(jconfig)
+	file:write(jconfig)
 	file:close()
 end
 
 function fileSysUI.loadFilter(InventoryMaid, slot)
-	local file = io.open(InventoryMaid.rootPathIO.."saves/slot"..slot..".json", "r")
-	io.input(file)
-	local config = json.decode(io.read("*a"))
+	local file = io.open("saves/slot"..slot..".json", "r")
+	local config = json.decode(file:read("*a"))
 	file:close()
 	InventoryMaid.settings = config
 end
 
 function fileSysUI.loadNames(InventoryMaid)
-	if not InventoryMaid.fileExists(InventoryMaid.rootPathIO.."saves/slot1.json") then
+	if not InventoryMaid.fileExists("saves/slot1.json") then
 		fileSysUI.resetSlot(InventoryMaid, 1)
 	end
-	if not InventoryMaid.fileExists(InventoryMaid.rootPathIO.."saves/slot2.json") then
+	if not InventoryMaid.fileExists("saves/slot2.json") then
 		fileSysUI.resetSlot(InventoryMaid, 2)
 	end
-	if not InventoryMaid.fileExists(InventoryMaid.rootPathIO.."saves/slot3.json") then
+	if not InventoryMaid.fileExists("saves/slot3.json") then
 		fileSysUI.resetSlot(InventoryMaid, 3)
 	end
-	if not InventoryMaid.fileExists(InventoryMaid.rootPathIO.."saves/slot4.json") then
+	if not InventoryMaid.fileExists("saves/slot4.json") then
 		fileSysUI.resetSlot(InventoryMaid, 4)
 	end
-	if not InventoryMaid.fileExists(InventoryMaid.rootPathIO.."saves/slot5.json") then
+	if not InventoryMaid.fileExists("saves/slot5.json") then
 		fileSysUI.resetSlot(InventoryMaid, 5)
 	end
 
-	local slot1 = io.open(InventoryMaid.rootPathIO.."saves/slot1.json", "r")
-	io.input(slot1)
-	local config1 = json.decode(io.read("*a"))
+	local slot1 = io.open("saves/slot1.json", "r")
+	local config1 = json.decode(slot1:read("*a"))
 	slot1:close()
 
-	local slot2 = io.open(InventoryMaid.rootPathIO.."saves/slot2.json", "r")
-	io.input(slot2)
-	local config2 = json.decode(io.read("*a"))
+	local slot2 = io.open("saves/slot2.json", "r")
+	local config2 = json.decode(slot2:read("*a"))
 	slot2:close()
 
-	local slot3 = io.open(InventoryMaid.rootPathIO.."saves/slot3.json", "r")
-	io.input(slot3)
-	local config3 = json.decode(io.read("*a"))
+	local slot3 = io.open("saves/slot3.json", "r")
+	local config3 = json.decode(slot3:read("*a"))
 	slot3:close()
 
-	local slot4 = io.open(InventoryMaid.rootPathIO.."saves/slot4.json", "r")
-	io.input(slot4)
-	local config4 = json.decode(io.read("*a"))
+	local slot4 = io.open("saves/slot4.json", "r")
+	local config4 = json.decode(slot4:read("*a"))
 	slot4:close()
 
-	local slot5 = io.open(InventoryMaid.rootPathIO.."saves/slot5.json", "r")
-	io.input(slot5)
-	local config5 = json.decode(io.read("*a"))
+	local slot5 = io.open("saves/slot5.json", "r")
+	local config5 = json.decode(slot5:read("*a"))
 	slot5:close()
 
 	InventoryMaid.settings.fileSettings.tableNames[1] = config1.fileSettings.currentName
@@ -73,16 +66,21 @@ function fileSysUI.loadNames(InventoryMaid)
 end
 
 function fileSysUI.resetSlot(InventoryMaid, slot)
-		local default = io.open(InventoryMaid.rootPathIO.."saves/default.json", "r")
-		io.input(default)
-		local defaultConfig = json.decode(io.read("*a"))
+		local default = io.open("saves/default.json", "r")
+		local defaultConfig = json.decode(default:read("*a"))
 		default:close()
 
-		local s = io.open(InventoryMaid.rootPathIO.."saves/slot"..slot..".json", "w")
-		io.output(s)
+		local s = io.open("saves/slot"..slot..".json", "w")
 		local dc = json.encode(defaultConfig)
-		io.write(dc)
+		s:write(dc)
 		s:close()
+end
+
+function fileSysUI.writeStartup(InventoryMaid)
+	local file = io.open("saves/startup.json", "w")
+	local jconfig = json.encode(InventoryMaid.standardSlot)
+	file:write(jconfig)
+	file:close()
 end
 
 function fileSysUI.drawSlot(InventoryMaid, slot)
@@ -97,6 +95,22 @@ function fileSysUI.drawSlot(InventoryMaid, slot)
 	save = InventoryMaid.CPS.CPButton("Save", 60, 30)
 	ImGui.SameLine()
 	reset = InventoryMaid.CPS.CPButton("Reset", 60, 30)
+	ImGui.SameLine()
+-- Handle load on start
+	state = false
+	if InventoryMaid.standardSlot == slot then
+		state = true
+	end
+
+	state, changed = ImGui.Checkbox("Load with start", state)
+	if state == true and changed then
+		InventoryMaid.standardSlot = slot
+		fileSysUI.writeStartup(InventoryMaid)
+	elseif state == false and changed then
+		InventoryMaid.standardSlot = 0
+		fileSysUI.writeStartup(InventoryMaid)
+	end
+-- End Handle load on start
 	InventoryMaid.CPS.colorEnd(1)
 	ImGui.EndChild()
 	if l then
@@ -116,7 +130,7 @@ end
 function fileSysUI.draw(InventoryMaid)
 
 	fileSysUI.loadNames(InventoryMaid)
-	tooltips = require (InventoryMaid.rootPath.. ".utility.tooltips")
+	tooltips = require ("utility/tooltips.lua")
 
 	fileSysUI.nameText = ImGui.InputTextWithHint("Enter a name", "Name...",fileSysUI.nameText, 100)
 	ImGui.SameLine()

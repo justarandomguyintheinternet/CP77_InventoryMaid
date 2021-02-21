@@ -1,18 +1,18 @@
 baseUI = {
-	
+
 }
 
 function baseUI.Draw(InventoryMaid)
     wWidth, wHeight = GetDisplayResolution()
 
-    baseUI.fileSysUI = require (InventoryMaid.rootPath.. ".ui.modules.fileSysUI")
-    baseUI.generalUI = require (InventoryMaid.rootPath.. ".ui.modules.generalUI")
-    baseUI.weaponUI = require (InventoryMaid.rootPath.. ".ui.modules.weaponUI")
-    baseUI.armorUI = require (InventoryMaid.rootPath.. ".ui.modules.armorUI")
-    baseUI.junkUI = require (InventoryMaid.rootPath.. ".ui.modules.junkUI")
+    baseUI.fileSysUI = require ("ui/modules/fileSysUI.lua")
+    baseUI.generalUI = require ("ui/modules/generalUI.lua")
+    baseUI.weaponUI = require ("ui/modules/weaponUI.lua")
+    baseUI.armorUI = require ("ui/modules/armorUI.lua")
+    baseUI.junkUI = require ("ui/modules/junkUI.lua")
 
     InventoryMaid.CPS.setThemeBegin()
-    ImGui.Begin("InventoryMaid v.1.0")
+    ImGui.Begin("InventoryMaid v.1.3")
     ImGui.SetWindowPos(wWidth/2-250, wHeight/2-400, ImGuiCond.FirstUseEver)
     ImGui.SetWindowSize(450, 800)
 
@@ -44,7 +44,7 @@ function baseUI.Draw(InventoryMaid)
             ImGui.EndTabItem()
         end
     end
--- End Tabbar 
+-- End Tabbar
 
     ImGui.End()
     InventoryMaid.CPS.setThemeEnd()
