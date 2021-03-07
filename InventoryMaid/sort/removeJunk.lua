@@ -209,6 +209,18 @@ function removeJunk.sellJunkType(tpe, percent)
     end
 end
 
+function removeJunk.dissasembleJunkType(tpe, percent)
+    local craftingSystem = Game.GetScriptableSystemsContainer():Get(CName.new('CraftingSystem'))
+    local ts = Game.GetTransactionSystem()
+    for _, v in ipairs(removeJunk.items[tpe]) do
+        local itemTDBID = TweakDBID.new(v)
+        local itemID = ItemID.new(itemTDBID)
+        local currentItemCount = math.floor(ts:GetItemQuantity(Game.GetPlayer(), itemID) * (percent / 100))
+        craftingSystem:DisassembleItem(Game.GetPlayer(), itemID, currentItemCount)
+    end
+
+end
+
 function removeJunk.previewType(tpe, percent)
     info = {count = 0, money = 0, afterCount = 0}
     local ts = Game.GetTransactionSystem()
@@ -277,6 +289,20 @@ function removeJunk.sellJunk(InventoryMaid)
 
     if InventoryMaid.settings.junkSettings[3].sellType then
         removeJunk.sellJunkType("jewellery", InventoryMaid.settings.junkSettings[3].percent)
+    end
+end
+
+function removeJunk.dissasembleJunk(InventoryMaid)
+    if InventoryMaid.settings.junkSettings[1].sellType then
+        removeJunk.dissasembleJunkType("junk", InventoryMaid.settings.junkSettings[1].percent)
+    end
+
+    if InventoryMaid.settings.junkSettings[2].sellType then
+        removeJunk.dissasembleJunkType("alcohol", InventoryMaid.settings.junkSettings[2].percent)
+    end
+
+    if InventoryMaid.settings.junkSettings[3].sellType then
+        removeJunk.dissasembleJunkType("jewellery", InventoryMaid.settings.junkSettings[3].percent)
     end
 end
 

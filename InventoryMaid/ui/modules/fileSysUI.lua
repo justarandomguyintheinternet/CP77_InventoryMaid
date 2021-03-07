@@ -15,9 +15,16 @@ function fileSysUI.saveFilter(InventoryMaid, slot, name)
 end
 
 function fileSysUI.loadFilter(InventoryMaid, slot)
+	tableFunctions = require("utility/tableFunctions")
+
 	local file = io.open("saves/slot"..slot..".json", "r")
 	local config = json.decode(file:read("*a"))
 	file:close()
+
+	if config.grenadeSettings == nil then
+		config.grenadeSettings = tableFunctions.deepcopy(InventoryMaid.originalSettings.grenadeSettings)
+	end
+
 	InventoryMaid.settings = config
 end
 

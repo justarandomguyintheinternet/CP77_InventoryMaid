@@ -35,6 +35,9 @@ registerForEvent("onInit", function()
     tableFunctions = require ("utility/tableFunctions.lua")
     
     drawWindow = false
+    drawWindowOneFrameSell = false
+    drawWindowOneFrameDissasemble = false
+
     InventoryMaid.standardSlot = 0
     InventoryMaid.originalSettings = {globalSettings = {sellFilter = 0, filterValueTopX = 3, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false, legendary = false, iconic = false}},
                                       weaponSettings = {sellWeapons = true, sellPerType = false, sellFilter = 0, filterValueTopX = 3, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false, legendary = false, iconic = false}, forceSubOptionsUpdate = false,
@@ -61,7 +64,16 @@ registerForEvent("onInit", function()
                                                                         [5] = {displayName = "Legs", typeName = "Clo_Legs", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
                                                                         [6] = {displayName = "Feet", typeName = "Clo_Feet", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3}}},
                                       fileSettings = {currentName = "Default", tableNames = {[1] = "Default", [2] = "Default", [3] = "Default", [4] = "Default", [5] = "Default"}},
-                                      junkSettings = {[1] = {typeName = "Junk", percent = 100, sellType = true}, [2] = {typeName = "Alcohol", percent = 100, sellType = true}, [3] = {typeName = "Jewellery", percent = 100, sellType = true}}}
+                                      junkSettings = {[1] = {typeName = "Junk", percent = 100, sellType = true}, [2] = {typeName = "Alcohol", percent = 100, sellType = true}, [3] = {typeName = "Jewellery", percent = 100, sellType = true}},
+                                      grenadeSettings = {sellGrenades = false, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false}, forceSubOptionsUpdate = false,
+                                      typeOptions = { [1] = {displayName = "Frag Grenade", typeName = "frag", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [2] = {displayName = "EMP Grenade", typeName = "emp", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [3] = {displayName = "Incendiary Grenade", typeName = "incendiary_grenade", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [4] = {displayName = "Flash Grenade", typeName = "flash", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [5] = {displayName = "Biohazard Grenade", typeName = "biohazard", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [6] = {displayName = "Recon Grenade", typeName = "recon", sellType = false, sellAll = false, filterValuePercent = 20},
+                                                      [7] = {displayName = "Cutting Grenade", typeName = "cutting", sellType = false, sellAll = false, filterValuePercent = 20}}}
+                                }
 
     
     InventoryMaid.resetSettings()
@@ -72,7 +84,17 @@ end)
 registerForEvent("onDraw", function()
     if drawWindow then
         baseUI.Draw(InventoryMaid)
-    end 
+    elseif drawWindowOneFrameSell then
+        baseUI.Draw(InventoryMaid)
+        baseUI.generalUI.previewText = "Sold!"
+        baseUI.generalUI.sell.sell(InventoryMaid)
+        drawWindowOneFrameSell = false
+    elseif drawWindowOneFrameDissasemble then
+        baseUI.Draw(InventoryMaid)
+        baseUI.generalUI.previewText = "Disassembled!"
+        baseUI.generalUI.sell.disassemble(InventoryMaid)
+        drawWindowOneFrameDissasemble = false
+    end
 end)
 
 registerForEvent("onOverlayOpen", function()
@@ -81,6 +103,14 @@ end)
 
 registerForEvent("onOverlayClose", function()
     drawWindow = false
+end)
+
+registerHotkey("inventoryMaidSell", "Sell selected", function()	
+	drawWindowOneFrameSell = true
+end)
+
+registerHotkey("inventoryMaidDisassemble", "Disassemble selected", function()	
+	drawWindowOneFrameDissasemble = true
 end)
 
 end

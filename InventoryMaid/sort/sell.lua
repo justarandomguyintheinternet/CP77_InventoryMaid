@@ -12,6 +12,9 @@ function sell.sell(InventoryMaid)
 
     removeJunk = require ("sort/removeJunk.lua")
     removeJunk.sellJunk(InventoryMaid)  
+
+    grenades = require("sort/grenades")
+    grenades.sellGrenades(InventoryMaid)
 end 
 
 function sell.disassemble(InventoryMaid)
@@ -24,7 +27,10 @@ function sell.disassemble(InventoryMaid)
     end  
 
     removeJunk = require ("sort/removeJunk.lua")
-    removeJunk.sellJunk(InventoryMaid) 
+    removeJunk.dissasembleJunk(InventoryMaid) 
+
+    grenades = require("sort/grenades")
+    grenades.disassembleGrenades(InventoryMaid)
 end
 
 function sell.calculateMoney()
@@ -41,6 +47,7 @@ end
 function sell.preview(InventoryMaid)
     removeJunk = require ("sort/removeJunk.lua")
     baseSort = require ("sort/baseSort.lua")
+    grenades = require("sort/grenades")
     tableFunctions = require ("utility/tableFunctions.lua")
     baseSort.generateSellList(InventoryMaid)
     nItems = baseSort.nItems
@@ -50,6 +57,12 @@ function sell.preview(InventoryMaid)
     money = money + junkInfo.money
     nItems = nItems + junkInfo.count
     nItemsAfter = nItemsAfter + junkInfo.afterCount
+
+    grenadesInfo = grenades.preview(InventoryMaid)
+    money = money + grenadesInfo.money
+    nItems = nItems + grenadesInfo.count
+    nItemsAfter = nItemsAfter + grenadesInfo.afterCount
+
     return string.format("Items currently: %d, After: %d, \nMoney gained: %d",nItems, nItemsAfter, money)
 end
 
