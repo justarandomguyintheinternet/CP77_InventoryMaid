@@ -97,11 +97,11 @@ function fileSysUI.drawSlot(InventoryMaid, slot)
     ImGui.Text(title)
 	ImGui.Separator()
 
-	l = InventoryMaid.CPS.CPButton("Load", 60, 30)
+	l = InventoryMaid.CPS:CPButton("Load", 60, 30)
 	ImGui.SameLine()
-	save = InventoryMaid.CPS.CPButton("Save", 60, 30)
+	save = InventoryMaid.CPS:CPButton("Save", 60, 30)
 	ImGui.SameLine()
-	reset = InventoryMaid.CPS.CPButton("Reset", 60, 30)
+	reset = InventoryMaid.CPS:CPButton("Reset", 60, 30)
 	ImGui.SameLine()
 -- Handle load on start
 	state = false

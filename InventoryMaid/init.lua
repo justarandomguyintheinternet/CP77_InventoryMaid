@@ -27,7 +27,7 @@ registerForEvent("onInit", function()
         end
     end
 
- 	InventoryMaid.CPS = require ("CPStyling.lua")
+ 	InventoryMaid.CPS = GetMod("CPStyling"):New()
  	InventoryMaid.theme = InventoryMaid.CPS
     InventoryMaid.color = InventoryMaid.CPS
 

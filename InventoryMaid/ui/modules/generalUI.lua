@@ -91,26 +91,26 @@ function generalUI.draw(InventoryMaid)
 
     -- Action buttons
         ImGui.Separator()
-        preview = InventoryMaid.CPS.CPButton("Preview selected", 125, 30)
+        preview = InventoryMaid.CPS:CPButton("Preview selected", 125, 30)
         if preview then       
              generalUI.previewText = generalUI.sell.preview(InventoryMaid)
         end
         ImGui.SameLine()
         ImGui.Text(generalUI.previewText)
         ImGui.Separator()
-        sellPressed = InventoryMaid.CPS.CPButton("Sell selected", 125, 30)
+        sellPressed = InventoryMaid.CPS:CPButton("Sell selected", 125, 30)
         if sellPressed then 
             generalUI.previewText = "Sold!"
             generalUI.sell.sell(InventoryMaid)
         end
         ImGui.SameLine()
-        disassemble = InventoryMaid.CPS.CPButton("Disassemble selected", 150, 30)
+        disassemble = InventoryMaid.CPS:CPButton("Disassemble selected", 150, 30)
         if disassemble then
             generalUI.previewText = "Disassembled!"
             generalUI.sell.disassemble(InventoryMaid)
         end
         ImGui.SameLine()
-        if (InventoryMaid.CPS.CPButton("Reset", 75, 30)) then
+        if (InventoryMaid.CPS:CPButton("Reset", 75, 30)) then
             InventoryMaid.resetSettings()
         end
 
