@@ -12,8 +12,8 @@ function baseUI.Draw(InventoryMaid)
     baseUI.junkUI = require ("ui/modules/junkUI.lua")
     baseUI.grenadeUI = require("ui/modules/grenadeUI.lua")
 
-    InventoryMaid.CPS:setThemeBegin()
-    ImGui.Begin("InventoryMaid v.1.41")
+    InventoryMaid.CPS.setThemeBegin()
+    ImGui.Begin("InventoryMaid v.1.4")
     ImGui.SetWindowPos(wWidth/2-250, wHeight/2-400, ImGuiCond.FirstUseEver)
     ImGui.SetWindowSize(450, 800)
 
@@ -49,13 +49,11 @@ function baseUI.Draw(InventoryMaid)
             baseUI.fileSysUI.draw(InventoryMaid)
             ImGui.EndTabItem()
         end
-        InventoryMaid.CPS.styleEnd(1)
-        ImGui.EndTabBar()
     end
 -- End Tabbar
-    
+
     ImGui.End()
-    InventoryMaid.CPS:setThemeEnd()
+    InventoryMaid.CPS.setThemeEnd()
 end
 
 return baseUI

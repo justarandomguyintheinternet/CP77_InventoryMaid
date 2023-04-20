@@ -45,10 +45,6 @@ function sell.calculateMoney()
 end
 
 function sell.preview(InventoryMaid)
-    local money = 0
-    local nItems = 0
-    local nItemsAfter = 0
-
     removeJunk = require ("sort/removeJunk.lua")
     baseSort = require ("sort/baseSort.lua")
     grenades = require("sort/grenades")
