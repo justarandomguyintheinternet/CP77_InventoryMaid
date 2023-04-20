@@ -27,9 +27,7 @@ registerForEvent("onInit", function()
         end
     end
 
- 	InventoryMaid.CPS = require ("CPStyling.lua")
- 	InventoryMaid.theme = InventoryMaid.CPS
-    InventoryMaid.color = InventoryMaid.CPS
+ 	InventoryMaid.CPS = require("CPStyling")
 
     InventoryMaid.baseUI = require ("ui/baseUI.lua")
     tableFunctions = require ("utility/tableFunctions.lua")
