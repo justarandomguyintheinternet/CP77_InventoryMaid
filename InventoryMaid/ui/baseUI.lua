@@ -13,7 +13,7 @@ function baseUI.Draw(InventoryMaid)
     baseUI.grenadeUI = require("ui/modules/grenadeUI.lua")
 
     InventoryMaid.CPS:setThemeBegin()
-    ImGui.Begin("InventoryMaid v.1.5")
+    ImGui.Begin("InventoryMaid v.1.41")
     ImGui.SetWindowPos(wWidth/2-250, wHeight/2-400, ImGuiCond.FirstUseEver)
     ImGui.SetWindowSize(450, 800)
 

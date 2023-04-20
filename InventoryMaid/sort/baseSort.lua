@@ -44,7 +44,7 @@ function baseSort.avgEquipped(type)
 end
 
 function baseSort.getItemLists(InventoryMaid) -- Fills the list for equipped items, weapons and armor
-	_, itemList = baseSort.ts:GetItemListByTags(baseSort.player, baseSort.slots)
+	_, itemList = baseSort.ts:GetItemListByTags(baseSort.player, baseSort.slots, itemList)
 	n = 1
 	for _,v in ipairs(itemList) do
 		baseSort.nItems = baseSort.nItems + 1
