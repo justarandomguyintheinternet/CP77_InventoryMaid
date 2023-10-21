@@ -44,7 +44,7 @@ function baseSort.avgEquipped(type)
 end
 
 function baseSort.getItemLists(InventoryMaid) -- Fills the list for equipped items, weapons and armor
-	_, itemList = baseSort.ts:GetItemListByTags(baseSort.player, baseSort.slots, itemList)
+	_, itemList = baseSort.ts:GetItemListByTags(baseSort.player, baseSort.slots)
 	n = 1
 	for _,v in ipairs(itemList) do
 		baseSort.nItems = baseSort.nItems + 1
@@ -54,7 +54,7 @@ function baseSort.getItemLists(InventoryMaid) -- Fills the list for equipped ite
 		isItemEquipped = baseSort.espd:IsEquipped(vItemID)
 		area = itemRecord:EquipArea():Type().value
 		quest = baseSort.ts:HasTag(baseSort.player, "Quest", vItemID)
-		if (area ~= "BaseFists") and (area ~= "VDefaultHandgun") and not quest then
+		if (area ~= "BaseFists") and (area ~= "VDefaultHandgun") and (area ~= "ArmsCW") and not quest then
 			if isItemEquipped then
 				if area == "Weapon" then
 					table.insert(baseSort.equippedList.weapons, v)

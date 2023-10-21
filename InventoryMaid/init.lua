@@ -27,9 +27,7 @@ registerForEvent("onInit", function()
         end
     end
 
- 	InventoryMaid.CPS = require ("CPStyling.lua")
- 	InventoryMaid.theme = InventoryMaid.CPS
-    InventoryMaid.color = InventoryMaid.CPS
+ 	InventoryMaid.CPS = require("CPStyling")
 
     InventoryMaid.baseUI = require ("ui/baseUI.lua")
     tableFunctions = require ("utility/tableFunctions.lua")
@@ -55,7 +53,11 @@ registerForEvent("onInit", function()
                                                                        [12] = {displayName = "Long blade", typeName = "Wea_LongBlade", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
                                                                        [13] = {displayName = "Hammer", typeName = "Wea_Hammer", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
                                                                        [14] = {displayName = "One handed club", typeName = "Wea_OneHandedClub", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
-                                                                       [15] = {displayName = "Two handed club", typeName = "Wea_TwoHandedClub", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3}}},
+                                                                       [15] = {displayName = "Two handed club", typeName = "Wea_TwoHandedClub", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
+                                                                       [16] = {displayName = "Axe", typeName = "Wea_Axe", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
+                                                                       [17] = {displayName = "Chainsword", typeName = "Wea_Chainsword", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
+                                                                       [18] = {displayName = "Machete", typeName = "Wea_Machete", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
+                                                                       [19] = {displayName = "Generic miscellaneous", typeName = "Gen_Misc", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3}}},
                                       armorSettings = {sellArmor = true, sellPerType = true, sellFilter = 0,  filterValueTopX = 3, filterValuePercent = 20, sellQualitys = {common = true, uncommon = true, rare = false, epic = false, legendary = false, iconic = false}, forceSubOptionsUpdate = false,
                                                         typeOptions = { [1] = {displayName = "Head", typeName = "Clo_Head", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
                                                                         [2] = {displayName = "Face", typeName = "Clo_Face", sellType = true, sellAll = false, filterValuePercent = 20, filterValueTopX = 3},
